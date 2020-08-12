@@ -144,6 +144,28 @@ public Action Influx_OnTimerFinish( int client, int runid, int mode, int style, 
     return Plugin_Continue;
 }
 
+public Action Influx_OnClientModeChange( int client, int mode, int lastmode )
+{
+    if( mode != lastmode && g_bPaused[client] && GetClientTeam( client ) == CS_TEAM_SPECTATOR )
+    {
+        Influx_PrintToChat( client, "%T", "INF_MUSTBEALIVE", client )
+        return Plugin_Handled;
+    }
+    
+    return Plugin_Continue;
+}
+
+public Action Influx_OnClientStyleChange( int client, int style, int laststyle )
+{
+    if( style != laststyle && g_bPaused[client] && GetClientTeam( client ) == CS_TEAM_SPECTATOR )
+    {
+        Influx_PrintToChat( client, "%T", "INF_MUSTBEALIVE", client )
+        return Plugin_Handled;
+    }
+        
+    return Plugin_Continue;
+}
+
 public Action Cmd_Practise_Continue( int client, int args )
 {
     if ( !client ) return Plugin_Handled;
@@ -257,12 +279,6 @@ stock bool PauseRun( int client )
     {
         return false;
     }
-    
-    
-
-    
-
-
     
     g_nPauses[client]++;
     
